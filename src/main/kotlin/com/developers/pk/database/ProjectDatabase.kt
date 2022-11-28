@@ -4,6 +4,7 @@ import com.developers.pk.models.CommonResponse
 import com.developers.pk.models.Users
 import org.bson.types.ObjectId
 import org.litote.kmongo.coroutine.coroutine
+import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
 
 
@@ -29,5 +30,15 @@ suspend fun getUserInDetail(userId: String): CommonResponse<Any> {
         CommonResponse(false,"Failed",mapOf(Pair("message","No data found")))
     } else {
         CommonResponse(true,"Success",peoples.findOneById(userId)!!)
+    }
+}
+
+suspend fun loginUser(name: String,adaar: String): CommonResponse<Any> {
+    val isExists = peoples.findOne(Users::name eq name,Users::adaarNumber eq adaar)
+
+    return if (isExists == null) {
+        CommonResponse(false,"Failed",mapOf(Pair("message","No user found")))
+    } else {
+        CommonResponse(true,"Success",isExists)
     }
 }

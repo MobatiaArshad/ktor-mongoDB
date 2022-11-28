@@ -3,8 +3,10 @@ package com.developers.pk.routes
 import com.developers.pk.database.createUpdateUser
 import com.developers.pk.database.getUserInDetail
 import com.developers.pk.database.getUsers
+import com.developers.pk.database.loginUser
 import com.developers.pk.models.CommonResponse
 import com.developers.pk.models.Users
+import com.developers.pk.postRequests.LoginData
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -41,6 +43,13 @@ fun Route.usersRoute() {
         get {
             val id = call.receive<Users>().id
             call.respond(HttpStatusCode.OK,getUserInDetail(id))
+        }
+    }
+
+    route("/loginUser"){
+        get {
+            val input = call.receive<LoginData>()
+            call.respond(HttpStatusCode.OK, loginUser(input.name,input.adaarNumber))
         }
     }
 
